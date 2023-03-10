@@ -8,7 +8,7 @@ public class Solution {
         var hashSet = new HashSet<int>();
         
         for(int i = 1; i <= numbers.Length; ++i)
-            DFS(numbers.ToCharArray(), 0, i, hashSet);
+            Perm(numbers.ToCharArray(), 0, i, hashSet);
         
         int answer = 0;
         foreach(int num in hashSet)
@@ -19,7 +19,7 @@ public class Solution {
         return answer;
     }
     
-    private void DFS(char[] arr, int depth, int length, HashSet<int> hashSet)
+    private void Perm(char[] arr, int depth, int length, HashSet<int> hashSet)
     {
         if(depth == length)
         {
@@ -30,9 +30,9 @@ public class Solution {
         
         for(int i = depth; i < arr.Length; i++)
         {
-            var copyArr = arr.Clone() as char[];
-            Swap(copyArr, i, depth);
-            DFS(copyArr, depth + 1, length, hashSet);
+            Swap(arr, i, depth);
+            Perm(arr, depth + 1, length, hashSet);
+            Swap(arr, i, depth);
         }
     }
     
