@@ -6,12 +6,12 @@ public class Solution {
     {
         int answer = int.MaxValue;
         bool[] visited = name.Select(s => s == 'A').ToArray(); // A 는 방문안해도 됨
-        Greedy(name, visited, 0, 0, ref answer);
+        DFS(name, visited, 0, 0, ref answer);
         
         return answer;
     }
     
-    private void Greedy(string name, bool[] visited, int cur, int count, ref int answer)
+    private void DFS(string name, bool[] visited, int cur, int count, ref int answer)
     {
         if(!visited[cur]) // A 면 이미 visited이니 무시한다.
         {
@@ -49,10 +49,10 @@ public class Solution {
             right = right < name.Length - 1 ? right + 1 : (right + 1) % name.Length;
         }
 
-        Greedy(name, visited, left, count + leftCount, ref answer);
+        DFS(name, visited, left, count + leftCount, ref answer);
         visited[left] = false;
         
-        Greedy(name, visited, right, count + rightCount, ref answer);
+        DFS(name, visited, right, count + rightCount, ref answer);
         visited[right] = false;
     }
 }
