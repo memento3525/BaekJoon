@@ -35,10 +35,9 @@ public class Solution
         while(startIndex < plans.GetLength(0))
         {
             Test cur = willPlayed[startIndex];
-            time = cur.start;
             
             bool isLast = startIndex + 1 == plans.GetLength(0);
-            int availableTime = isLast ? int.MaxValue : willPlayed[startIndex + 1].start - time;
+            int availableTime = isLast ? int.MaxValue : willPlayed[startIndex + 1].start - cur.start;
             
             holded.Push(cur);
             while(holded.Count > 0)
@@ -46,7 +45,6 @@ public class Solution
                 Test top = holded.Peek();
                 if(availableTime >= top.remain) // 시간 충분. 꺼낸 과제완료
                 {
-                    time += top.remain;
                     availableTime -= top.remain;
                     answer.Add(top.name);
                     holded.Pop();
@@ -56,7 +54,6 @@ public class Solution
                 }
                 else // 꺼낸 과제를 완료하기에는 시간이 부족함.
                 {
-                    time += availableTime;
                     top.remain -= availableTime;
                     break;
                 }
