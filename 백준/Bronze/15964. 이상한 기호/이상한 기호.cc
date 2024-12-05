@@ -4,7 +4,7 @@ using namespace std;
 
 int main(void)
 {
-    int a, b;
+    long a, b;
     cin >> a >> b;
 
     cout << (a + b) * (a - b);
