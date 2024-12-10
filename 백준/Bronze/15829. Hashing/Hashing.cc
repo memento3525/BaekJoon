@@ -9,19 +9,15 @@ int main(void)
     cout.tie(NULL);
 
     int l;
-    cin >> l;
-
     string str;
-    cin >> str;
+    cin >> l >> str;
 
     const int m = 1234567891;
 
-    int sum = 0;
+    long sum = 0;
     for (int i = 0; i < l; ++i)
     {
-        int num = str[i] - 'a' + 1;
-
-        int sqrSum = num;
+        long sqrSum = str[i] - 'a' + 1;
         for (int k = 0; k < i; ++k)
         {
             sqrSum = sqrSum * 31 % m;
