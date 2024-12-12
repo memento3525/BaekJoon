@@ -4,29 +4,29 @@ using namespace std;
 
 int main(void)
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
     int n;
     cin >> n;
 
-    list<int> list;
+    int* arr = new int[2 * n];
 
-    for (int i = 1; i <= n; ++i)
+    for (int i = 0; i <= n; ++i)
     {
-        list.emplace_back(i);
+        arr[i] = i + 1;
     }
 
-    while (list.size() > 1)
-    {
-        list.pop_front();
-        
-        int front = list.front();
-        list.push_back(front);
+    int top = 0;
+    int bottom = n - 1;
 
-        list.pop_front();
+    while (top != bottom)
+    {
+        ++top;
+
+        arr[bottom + 1] = arr[top];
+
+        ++top;
+        ++bottom;
     }
 
-    cout << list.front();
+    cout << arr[top];
+    delete[] arr;
 }
