@@ -26,10 +26,10 @@ int main(void)
     vector<int> coins;
     for (int i = v.size() - 1; i >= 0; --i)
     {
-        while (v[i] <= remain)
+        if (v[i] <= remain)
         {
-            ++count;
-            remain -= v[i];
+            count += remain / v[i];
+            remain %= v[i];
 
             if (remain == 0)
                 break;
