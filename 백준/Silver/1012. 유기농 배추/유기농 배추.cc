@@ -11,27 +11,18 @@ int dirX[4] = { 0, 1,  0, -1 };
 
 void DFS(int y, int x)
 {
-    vector<pair<int, int>> open;
-    open.push_back({ y, x });
-
-    while (open.size())
+    visited[y][x] = true;
+    for (int i = 0; i < 4; ++i)
     {
-        pair<int, int> back = open.back();
-        open.pop_back();
+        int ny = y + dirY[i];
+        int nx = x + dirX[i];
 
-        for (int i = 0; i < 4; ++i)
+        if (ny < 0 || ny >= height) continue;
+        if (nx < 0 || nx >= width) continue;
+
+        if (map[ny][nx] == 1 && !visited[ny][nx])
         {
-            int nextY = back.first + dirY[i];
-            int nextX = back.second + dirX[i];
-
-            if (nextY < 0 || nextY >= height) continue;
-            if (nextX < 0 || nextX >= width) continue;
-
-            if (map[nextY][nextX] == 0) continue;
-            if (visited[nextY][nextX]) continue;
-
-            visited[nextY][nextX] = true;
-            open.push_back({ nextY, nextX });
+            DFS(ny, nx);
         }
     }
 }
