@@ -2,17 +2,15 @@
 #include <vector>
 using namespace std;
 
-int n, k;
+int n, k, currentSink;
 vector<vector<int>> map;
 vector<vector<bool>> visited;
-int currentSink;
 
 int dirY[4] = { 1, 0, -1,  0 };
 int dirX[4] = { 0, 1,  0, -1 };
 
 void DFS(int y, int x)
 {
-    visited[y][x] = true;
     for (int i = 0; i < 4; ++i)
     {
         int ny = y + dirY[i];
@@ -23,6 +21,7 @@ void DFS(int y, int x)
 
         if (map[ny][nx] > currentSink && !visited[ny][nx])
         {
+            visited[ny][nx] = true;
             DFS(ny, nx);
         }
     }
@@ -44,7 +43,7 @@ int main(void)
     {
         map[y] = vector<int>(n);
         visited[y] = vector<bool>(n);
-        
+
         for (int x = 0; x < n; ++x)
         {
             cin >> temp;
@@ -55,10 +54,9 @@ int main(void)
         }
     }
 
-    int maxSinkHeight = 0;
-    int maxSinkCount = 0;
+    int maxSinkCount = 1;
 
-    for (int sink = 0; sink < maxHeight; ++sink)
+    for (int sink = 1; sink < maxHeight; ++sink)
     {
         currentSink = sink;
 
@@ -68,7 +66,7 @@ int main(void)
                 visited[y][x] = false;
         }
 
-        int resultCount = 0;
+        int count = 0;
         for (int y = 0; y < n; ++y)
         {
             for (int x = 0; x < n; ++x)
@@ -76,16 +74,13 @@ int main(void)
                 if (map[y][x] > currentSink && !visited[y][x])
                 {
                     DFS(y, x);
-                    ++resultCount;
+                    ++count;
                 }
             }
         }
 
-        if (resultCount > maxSinkCount)
-        {
-            maxSinkHeight = sink;
-            maxSinkCount = resultCount;
-        }
+        if (count > maxSinkCount)
+            maxSinkCount = count;
     }
 
     cout << maxSinkCount;
