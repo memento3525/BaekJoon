@@ -14,14 +14,16 @@ int main(void)
     cin >> n >> c;
 
     unordered_map<int, int> map;
-    vector<int> all(n);
+    unordered_map<int, int> map_first;
 
     int temp;
     for (int i = 0; i < n; ++i)
     {
         cin >> temp;
 
-        all[i] = temp;
+        if (map_first[temp] == 0)
+            map_first[temp] = i + 1;
+
         ++map[temp];
     }
 
@@ -34,16 +36,9 @@ int main(void)
     sort(sortV.begin(), sortV.end(), [&](const pair<int, int>& a, const pair<int, int>& b)
         {
             if (a.second == b.second)
-            {
-                auto posA = find(all.begin(), all.end(), a.first);
-                auto posB = find(all.begin(), all.end(), b.first);
+                return map_first[a.first] < map_first[b.first];
 
-                return posA < posB;
-            }
-            else
-            {
-                return (a.second > b.second);
-            }
+            return (a.second > b.second);
         });
 
     for (const auto& item : sortV)
