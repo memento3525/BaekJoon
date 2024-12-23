@@ -3,13 +3,12 @@
 using namespace std;
 
 int n, m, temp;
-vector<vector<int>> map;
+int result = INT16_MAX;
 vector<pair<int, int>> house;
 vector<pair<int, int>> shop;
+vector<pair<int, int>> v;
 
-int result = INT16_MAX;
-
-void CalculateDist(vector<pair<int, int>>& v)
+void CalculateDist()
 {
     int sum = 0;
     for (const auto& h : house)
@@ -29,18 +28,18 @@ void CalculateDist(vector<pair<int, int>>& v)
         result = sum;
 }
 
-void Combi(vector<pair<int, int>>& v, int index)
+void Combi(int index)
 {
     if (v.size() == m)
     {
-        CalculateDist(v);
+        CalculateDist();
         return;
     }
 
     for (int i = index + 1; i < shop.size(); ++i)
     {
         v.push_back(shop[i]);
-        Combi(v, i);
+        Combi(i);
         v.pop_back();
     }
 }
@@ -52,26 +51,23 @@ int main(void)
     cout.tie(NULL);
 
     cin >> n >> m;
-    map.resize(n);
 
-    for (int i = 0; i < n; ++i)
+    house.reserve(n);
+    shop.reserve(n * 2);
+
+    for (int y = 0; y < n; ++y)
     {
-        map[i] = vector<int>(n);
-
-        for (int k = 0; k < n; ++k)
+        for (int x = 0; x < n; ++x)
         {
             cin >> temp;
-            map[i][k] = temp;
 
             if (temp == 1)
-                house.push_back({ i, k });
+                house.push_back({ y, x });
             else if (temp == 2)
-                shop.push_back({ i, k });
+                shop.push_back({ y, x });
         }
     }
 
-    vector<pair<int, int>> v;
-    Combi(v, -1);
-
+    Combi(-1);
     cout << result;
 }
