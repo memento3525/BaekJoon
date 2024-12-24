@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 using namespace std;
 
 int n;
 vector<vector<int>> map;
 vector<bool> visited;
+vector<int> open;
 
 int Solve(int a, int b)
 {
@@ -15,13 +15,13 @@ int Solve(int a, int b)
     for (int i = 0; i < n; ++i)
         visited[i] = false;
 
-    queue<int> q;
-    q.push(a);
+    open.clear();
+    open.emplace_back(a);
 
-    while (!q.empty())
+    while (!open.empty())
     {
-        int top = q.front();
-        q.pop();
+        int top = open.back();
+        open.pop_back();
 
         for (int i = 0; i < n; ++i)
         {
@@ -31,7 +31,7 @@ int Solve(int a, int b)
                 return 1;
 
             visited[i] = true;
-            q.push(i);
+            open.emplace_back(i);
         }
     }
     return 0;
@@ -45,6 +45,7 @@ int main(void)
 
     cin >> n;
 
+    open.reserve(n);
     visited.resize(n);
     map.resize(n);
     for (int y = 0; y < n; ++y)
