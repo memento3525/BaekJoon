@@ -28,8 +28,6 @@ bool IsValid()
 
 void Combi(int here, int cnt)
 {
-    if (cnt > 3 || cnt >= ret) return;
-
     if (IsValid())
     {
         if (cnt < ret)
@@ -43,6 +41,7 @@ void Combi(int here, int cnt)
         {
             if (visited[y][x]) continue;
             if (visited[y][x - 1] || visited[y][x + 1]) continue;
+            if (cnt + 1 > 3 || cnt + 1 >= ret) continue;
             
             visited[y][x] = 1;
             Combi(y, cnt + 1);
