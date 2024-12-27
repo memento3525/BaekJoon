@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 #include <vector>
 
 using namespace std;
@@ -10,56 +9,39 @@ int n;
 int ret = INT32_MAX;
 vector<vector<int>> map;
 vector<vector<int>> visited;
-vector<pair<int, int>> flower;
 
-bool CheckIntersection(const pair<int, int>& a, const pair<int, int>& b)
+int Plant(int y, int x)
 {
-    if (abs(a.first - b.first) <= 1 && abs(a.second - b.second) <= 1) return true;
-    if (a.first == b.first && abs(a.second - b.second) == 2) return true;
-    if (a.second == b.second && abs(a.first - b.first) == 2) return true;
+    int price = 0;
 
-    return false;
-}
-
-bool CheckDeath()
-{
-    if (flower.size() >= 2)
+    for (int i = 0; i < 5; ++i)
     {
-        if (CheckIntersection(flower[0], flower[1])) return true;
+        int ny = y + dy[i];
+        int nx = x + dx[i];
 
-        if (flower.size() >= 3)
-        {
-            if (CheckIntersection(flower[0], flower[2])) return true;
-            if (CheckIntersection(flower[1], flower[2])) return true;
-        }
+        visited[ny][nx] = 1;
+        price += map[ny][nx];
     }
-    return false;
+
+    return price;
 }
 
-int CheckPrice()
+bool CanPlant(int y, int x)
 {
-    int sum = 0;
-    for (const auto& f : flower)
+    for (int i = 0; i < 5; ++i)
     {
-        sum += map[f.first][f.second];
-        sum += map[f.first + 1][f.second];
-        sum += map[f.first - 1][f.second];
-        sum += map[f.first][f.second + 1];
-        sum += map[f.first][f.second - 1];
+        if (visited[y + dy[i]][x + dx[i]])
+            return false;
     }
-    return sum;
+    return true;
 }
 
-void Go()
+void Go(int cnt, int sum)
 {
-    if (CheckDeath())
-        return;
-
-    if (flower.size() == 3)
+    if (cnt == 3)
     {
-        int price = CheckPrice();
-        if (price < ret)
-            ret = price;
+        if (sum < ret)
+            ret = sum;
 
         return;
     }
@@ -68,14 +50,10 @@ void Go()
     {
         for (int x = 1; x < n - 1; ++x)
         {
-            if (visited[y][x]) continue;
+            if (!CanPlant(y, x)) continue;
 
-            for (int i = 0; i < 5; ++i)
-                visited[y + dy[i]][x + dx[i]] = 1;
-
-            flower.push_back({ y, x });
-            Go();
-            flower.pop_back();
+            int newPrice = Plant(y, x);
+            Go(cnt + 1, sum + newPrice);
 
             for (int i = 0; i < 5; ++i)
                 visited[y + dy[i]][x + dx[i]] = 0;
@@ -101,7 +79,7 @@ int main(void)
             cin >> map[y][x];
     }
 
-    Go();
+    Go(0, 0);
 
     cout << ret;
 }
