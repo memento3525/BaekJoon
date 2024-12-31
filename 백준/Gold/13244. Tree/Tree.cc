@@ -3,7 +3,7 @@
 using namespace std;
 
 int t, n, m, a, b;
-int connected[1001][1001];
+vector<vector<int>> map;
 
 bool IsTree()
 {
@@ -21,14 +21,14 @@ bool IsTree()
 
         for (int i = 1; i <= n; ++i)
         {
-            if (connected[back][i])
+            if (map[back][i])
             {
                 if (visited[i])
                     return false;
 
                 // 연결 끊음
-                connected[back][i] = 0;
-                connected[i][back] = 0;
+                map[back][i] = 0;
+                map[i][back] = 0;
 
                 visited[i] = 1;
                 open.push_back(i);
@@ -50,22 +50,38 @@ int main(void)
 
     for (int i = 0; i < t; ++i)
     {
-        fill(&connected[0][0], &connected[0][0] + 1001 * 1001, 0);
-
         cin >> n >> m;
 
-        bool isGraph = false;
-        for (int y = 0; y < m; ++y)
+        map.resize(n + 1);
+        for (int y = 0; y <= n; ++y)
         {
-            cin >> a >> b;
-
-            if (connected[a][b] == 1)
-                isGraph = true;
-
-            connected[a][b] = 1;
-            connected[b][a] = 1;
+            map[y].resize(n + 1);
+            for (int x = 0; x <= n; ++x)
+                map[y][x] = 0;
         }
 
-        cout << (!isGraph && IsTree() ? "tree" : "graph") << '\n';
+        if (n - 1 == m)
+        {
+            bool isGraph = false;
+            for (int y = 0; y < m; ++y)
+            {
+                cin >> a >> b;
+
+                if (map[a][b] == 1)
+                    isGraph = true;
+
+                map[a][b] = 1;
+                map[b][a] = 1;
+            }
+
+            cout << (!isGraph && IsTree() ? "tree" : "graph") << '\n';
+        }
+        else
+        {
+            for (int y = 0; y < m; ++y)
+                cin >> a >> b;
+
+            cout << "graph" << '\n';
+        }
     }
 }
