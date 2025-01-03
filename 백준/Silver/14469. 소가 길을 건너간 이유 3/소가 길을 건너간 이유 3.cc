@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <algorithm>
 using namespace std;
 
@@ -10,43 +9,26 @@ int main(void)
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int n, arriv, duration;
+    int n, a, d;
     cin >> n;
 
     vector<pair<int, int>> v;
     for (int i = 0; i < n; ++i)
     {
-        cin >> arriv >> duration;
-        v.push_back({ arriv, duration });
+        cin >> a >> d;
+        v.push_back({ a, d });
     }
 
     sort(v.begin(), v.end());
 
-    priority_queue<pair<int, int>> pq;
-
-    int i = 0, t = 0, d = 0;
-    while (i != v.size() || pq.size() || d > 0)
+    int time = 0;
+    for (const auto& cow : v)
     {
-        ++t;
+        if (cow.first > time)
+            time = cow.first;
 
-        if (d > 0)
-            --d;
-
-        if (d == 0)
-        {
-            while (i < v.size() && v[i].first <= t)
-            {
-                pq.push(v[i]);
-                ++i;
-            }
-
-            if (pq.size())
-            {
-                d = pq.top().second;
-                pq.pop();
-            }
-        }
+        time += cow.second;
     }
 
-    cout << t;
+    cout << time;
 }
