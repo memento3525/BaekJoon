@@ -10,44 +10,43 @@ int main(void)
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int n, arrived, duration;
+    int n, arriv, duration;
     cin >> n;
 
     vector<pair<int, int>> v;
     for (int i = 0; i < n; ++i)
     {
-        cin >> arrived >> duration;
-        v.push_back({ arrived, duration });
+        cin >> arriv >> duration;
+        v.push_back({ arriv, duration });
     }
 
     sort(v.begin(), v.end());
 
     priority_queue<pair<int, int>> pq;
 
-    int index = 0;
-    int time = 0;
-    int curDuration = 0;
-    while (index != v.size() || pq.size() || curDuration > 0)
+    int i = 0, t = 0, d = 0;
+    while (i != v.size() || pq.size() || d > 0)
     {
-        ++time;
-        while (index < v.size() && v[index].first <= time)
-        {
-            pq.push(v[index]);
-            ++index;
-        }
+        ++t;
 
-        if (curDuration > 0)
-            --curDuration;
+        if (d > 0)
+            --d;
 
-        if (curDuration == 0)
+        if (d == 0)
         {
+            while (i < v.size() && v[i].first <= t)
+            {
+                pq.push(v[i]);
+                ++i;
+            }
+
             if (pq.size())
             {
-                curDuration = pq.top().second;
+                d = pq.top().second;
                 pq.pop();
             }
         }
     }
 
-    cout << time;
+    cout << t;
 }
