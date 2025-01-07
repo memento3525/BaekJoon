@@ -50,15 +50,16 @@ int main(void)
             cin >> map[y][x];
     }
 
-    for (int i = 0; i < r; ++i)
+    int maxK = min(width / 2, height / 2);
+    for (int k = 0; k < maxK; ++k)
     {
-        int maxK = min(width / 2, height / 2);
-        for (int k = 0; k < maxK; ++k)
-        {
-            int yStep = height - k * 2 - 1;
-            int xStep = width - k * 2 - 1;
+        int yStep = height - k * 2 - 1;
+        int xStep = width - k * 2 - 1;
+
+        int rot = r % (2 * yStep + 2 * xStep);
+
+        for (int i = 0; i < rot; ++i)
             _Rotate(0 + k, 0 + k, yStep, xStep);
-        }
     }
 
     for (int y = 0; y < height; ++y)
