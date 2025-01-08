@@ -26,14 +26,15 @@ int main(void)
 
     for (int i = 0; i < N; ++i)
     {
+        if (cur >= v[i].second)
+            continue;
+
         if (cur < v[i].first)
             cur = v[i].first;
 
-        while (cur < v[i].second)
-        {
-            cur += L;
-            ++ret;
-        }
+        int cnt = (v[i].second - cur - 1) / L + 1;
+        ret += cnt;
+        cur += L * cnt;
     }
 
     cout << ret;
