@@ -12,7 +12,7 @@ int INF = 999999999;
 
 int Go(int here, int visited)
 {
-    if (visited == (1 << n) - 1) // 전부 방문
+    if (visited == (1 << n) - 1)
     {
         return cost[here][0] ? cost[here][0] : INF;
     }
@@ -47,7 +47,5 @@ int main(void)
 
     memset(dp, -1, sizeof(dp));
 
-    // 시작점이 0이라고 가정하고 시작.
-    // 외판원 문제는 어느위치에서 시작하던 순회 최소비용이라 결과가 동일함.
     cout << Go(0, 1);
 }
