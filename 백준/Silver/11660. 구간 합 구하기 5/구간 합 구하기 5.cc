@@ -4,8 +4,7 @@ using namespace std;
 
 int n, t;
 vector<vector<int>> map;
-vector<vector<int>> xSum;
-vector<vector<int>> ySum;
+vector<vector<int>> dp;
 
 int main(void)
 {
@@ -18,27 +17,14 @@ int main(void)
     int np1 = n + 1;
 
     map.assign(np1, vector<int>(np1));
-    xSum.assign(np1, vector<int>(np1));
-    ySum.assign(np1, vector<int>(np1));
+    dp.assign(np1, vector<int>(np1));
 
     for (int y = 1; y <= n; ++y)
     {
-        int sum = 0;
         for (int x = 1; x <= n; ++x)
         {
             cin >> map[y][x];
-            sum += map[y][x];
-            xSum[y][x] = sum;
-        }
-    }
-
-    for (int x = 1; x <= n; ++x)
-    {
-        int sum = 0;
-        for (int y = 1; y <= n; ++y)
-        {
-            sum += map[y][x];
-            ySum[y][x] = sum;
+            dp[y][x] = map[y][x] + dp[y - 1][x] + dp[y][x - 1] - dp[y - 1][x - 1];
         }
     }
 
@@ -47,24 +33,10 @@ int main(void)
     {
         cin >> y1 >> x1 >> y2 >> x2;
 
-        int h = y2 - y1;
-        int w = x2 - x1;
-
-        int sum = 0;
-        if (h > w)
-        {
-            // y Sum
-            for (int x = x1; x <= x2; ++x)
-            {
-                sum += ySum[y2][x] - ySum[y1 - 1][x];
-            }
-        }
-        else
-        {
-            // x Sum
-            for (int y = y1; y <= y2; ++y)
-                sum += xSum[y][x2] - xSum[y][x1 - 1];
-        }
+        int sum = dp[y2][x2] 
+            - dp[y2][x1 - 1] 
+            - dp[y1 - 1][x2] 
+            + dp[y1 - 1][x1 - 1];
 
         cout << sum << '\n';
     }
