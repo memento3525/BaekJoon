@@ -2,30 +2,10 @@
 #include <vector>
 using namespace std;
 
-struct Item
-{
-    int w, v;
-};
-
 int n, k;
-int dp[100001][101]; // 현재 무게일 때 가치, 마지막 방문
-vector<Item> map;
-
-int Go(int curMass, int start)
-{
-    if (curMass > k)
-        return -200001; // 실패
-
-    int& ret = dp[curMass][start];
-    if (ret != 0) return ret;
-
-    for (int i = start; i < n; ++i)
-    {
-        ret = max(ret, (Go(curMass + map[i].w, i + 1) + map[i].v));
-    }
-
-    return ret;
-}
+int dp[101][1000001];
+int w[101];
+int v[101]; // 페어로 할당해도됨
 
 int main(void)
 {
@@ -35,14 +15,25 @@ int main(void)
 
     cin >> n >> k;
 
-    map.resize(n);
+    for (int i = 1; i <= n; ++i)
+        cin >> w[i] >> v[i];
 
-    for (int i = 0; i < n; ++i)
+    for (int i = 1; i <= n; ++i)
     {
-        Item item{};
-        cin >> item.w >> item.v;
-        map[i] = item;
+        for (int wi = 1; wi <= k; ++wi)
+        {
+            if (wi - w[i] >= 0) // 담을 수 있는 경우
+            {
+                dp[i][wi] = max(
+                    dp[i - 1][wi], // 이전 꺼를 담는 경우
+                    dp[i - 1][wi - w[i]] + v[i]); // 이전 꺼를 안담고 이걸 담는 경우
+            }
+            else // 못담는 경우
+            {
+                dp[i][wi] = dp[i - 1][wi];
+            }
+        }
     }
 
-    cout << Go(0, 0);
+    cout << dp[n][k];
 }
