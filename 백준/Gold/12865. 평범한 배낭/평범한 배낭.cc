@@ -3,7 +3,7 @@
 using namespace std;
 
 int n, k;
-int dp[101][1000001];
+int dp[101][100001];
 int w[101];
 int v[101]; // 페어로 할당해도됨
 
