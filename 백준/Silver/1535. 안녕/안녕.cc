@@ -2,18 +2,18 @@
 #include <vector>
 using namespace std;
 
+int n;
+int dmg[21];
+int joy[21];
+int dp[21][101];
+
 int main(void)
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
 
-    int n;
     cin >> n;
-
-    vector<int> dmg(n + 1);
-    vector<int> joy(n + 1);
-    vector<vector<int>> dp(n + 1, vector<int>(101));
 
     for (int i = 1; i <= n; ++i)
         cin >> dmg[i];
