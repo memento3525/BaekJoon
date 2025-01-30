@@ -13,19 +13,16 @@ const ll PLUS = 1;
 
 ll Go(ll here, ll sum)
 {
-    if (here == n - 1)
+    if (sum < 0 || sum > 20) return 0;
+
+    if (here == n - 2)
         return (sum == num[n - 1]);
 
     ll& ret = dp[here][sum];
     if (ret != -1) return ret;
 
-    ret = 0;
-
-    if (sum + num[here] <= 20)
-        ret += Go(here + 1, sum + num[here]);
-
-    if (sum - num[here] >= 0)
-        ret += Go(here + 1, sum - num[here]);
+    ret = Go(here + 1, sum + num[here + 1]) 
+        + Go(here + 1, sum - num[here + 1]);
 
     return ret;
 }
@@ -43,5 +40,5 @@ int main(void)
     for (int i = 0; i < n; ++i)
         cin >> num[i];
 
-    cout << Go(1, num[0]);
+    cout << Go(0, num[0]);
 }
