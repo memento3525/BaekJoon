@@ -2,28 +2,25 @@
 #include <vector>
 using namespace std;
 
+const int INF = (int)1e9;
 int n, k;
 int dp[101][100001];
 
-int walk[101];
-int bike[101];
-int walk_t[101];
-int bike_t[101];
+int a[101], at[101];
+int b[101], bt[101];
 
 int Go(int idx, int time)
 {
+    if (time < 0) return -INF;
     if (idx == n) return 0;
 
     int& ret = dp[idx][time];
-    if (ret > 0) return ret;
+    if (ret != -INF) return ret;
 
-    ret = -1e6;
-
-    if (time >= walk_t[idx])
-        ret = max(ret, Go(idx + 1, time - walk_t[idx]) + walk[idx]);
-
-    if (time >= bike_t[idx])
-        ret = max(ret, Go(idx + 1, time - bike_t[idx]) + bike[idx]);
+    ret = max(
+        Go(idx + 1, time - at[idx]) + a[idx], 
+        Go(idx + 1, time - bt[idx]) + b[idx]
+    );
 
     return ret;
 }
@@ -34,10 +31,12 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
+    fill(&dp[0][0], &dp[0][0] + 101 * 100001, -INF); // 끝까지 도달하지 못한 경로를 배제하기 위한 수
+
     cin >> n >> k; // n은 도시갯수, k는 최대시간
 
     for (int i = 0; i < n; ++i)
-        cin >> walk_t[i] >> walk[i] >> bike_t[i] >> bike[i];
+        cin >> at[i] >> a[i] >> bt[i] >> b[i];
 
     cout << Go(0, k);
 }
