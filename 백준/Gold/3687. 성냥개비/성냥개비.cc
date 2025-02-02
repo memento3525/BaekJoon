@@ -2,99 +2,40 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <string>
 using namespace std;
 
 const string INFSTR = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
-const int INF = 1e9;
 int num[10]{ 6, 2, 5, 5, 4, 5, 6, 3, 7, 6 };
 int n;
+string dp[101];
 
-int dp[101][51]; // 사용한 성냥, 인덱스
-vector<int> v;
-vector<vector<int>> retV;
-int curMin;
-
-int GoMin(int remain, int index) // 최소 사이즈 먼저찾음
+string get_min_str(const string& a, const string& b)
 {
-    if (remain == 0)
-    {
-        if (v.size() < curMin)
-        {
-            retV.clear();
-            curMin = v.size();
-            retV.push_back(v);
-        }
-        else if (v.size() == curMin)
-        {
-            retV.push_back(v);
-        }
+    if (a.size() < b.size()) return a;
+    if (a.size() > b.size()) return b;
+    return (a < b ? a : b);
+}
 
-        return 0;
-    }
+string GoMin(int remain)
+{
+    if (remain == 0) return "";
 
-    int& ret = dp[remain][index];
-    if (ret != INF) return ret;
+    string& ret = dp[remain];
+    if (ret != INFSTR) return ret;
 
     for (int i = 0; i < 10; ++i)
     {
-        if (index == 0 && i == 0) continue;
         if (remain < num[i]) continue;
-        if (remain - num[i] == 1) continue;
+        if (remain == n && i == 0) continue;
 
-        v.push_back(i);
-        ret = min(ret, GoMin(remain - num[i], index + 1) + 1);
-        v.pop_back();
+        ret = get_min_str(ret, (to_string(i) + GoMin(remain - num[i])));
     }
 
     return ret;
 }
 
-string GetMin(int n)
-{
-    fill(&dp[0][0], &dp[0][0] + 101 * 51, INF);
-    curMin = INF;
-    v.clear();
-
-    GoMin(n, 0);
-
-    string minStr = INFSTR;
-    for (auto& item : retV)
-    {
-        sort(item.begin(), item.end());
-        if (item[0] == 0)
-        {
-            if (n == 1) continue;
-
-            int notZeroIndex = -1;
-
-            for (int i = 1; i < item.size(); ++i)
-            {
-                if (item[i] != 0)
-                {
-                    notZeroIndex = i;
-                    break;
-                }
-            }
-
-            if (notZeroIndex == -1) continue;
-
-            swap(item[0], item[notZeroIndex]);
-        }
-
-        stringstream ss;
-
-        for (auto c : item)
-            ss << c;
-
-        string finalStr = ss.str();
-        if (finalStr < minStr)
-            minStr = finalStr;
-    }
-
-    return minStr;
-}
-
-string GetMax(int remain)
+string GoMax(int remain)
 {
     stringstream ss;
 
@@ -124,6 +65,7 @@ int main(void)
     for (int i = 0; i < t; ++i)
     {
         cin >> n;
-        cout << GetMin(n) << ' ' << GetMax(n) << '\n';
+        fill(dp, dp + 101, INFSTR);
+        cout << GoMin(n) << ' ' << GoMax(n) << '\n';
     }
 }
