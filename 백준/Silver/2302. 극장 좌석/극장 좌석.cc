@@ -3,40 +3,41 @@
 #include <algorithm>
 using namespace std;
 
+int n, m, dp[41], vip[41];
+
+int Go(int i)
+{
+    if (i >= n - 1) return 1;
+    if (vip[i]) return Go(i + 1);
+
+    int& ret = dp[i];
+    if (ret != -1) return ret;
+
+    ret = 0;
+    if (vip[i + 1])
+        ret += Go(i + 1);
+    else
+        ret += Go(i + 1) + Go(i + 2);
+
+    return ret;
+}
+
 int main(void)
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
 
-    int fibo[41];
-    fibo[0] = 1;
-    fibo[1] = 1;
-    fibo[2] = 2;
+    fill(dp, dp + 41, -1);
 
-    for (int i = 3; i <= 40; ++i)
-        fibo[i] = fibo[i - 1] + fibo[i - 2];
-
-    int n, m;
     cin >> n >> m;
 
-    int cur = 1;
     int vipTemp;
-    vector<int> v;
     for (int i = 0; i < m; ++i)
     {
         cin >> vipTemp;
-        v.push_back(vipTemp - cur);
-        cur = vipTemp + 1;
-    }
-    v.push_back(n - cur + 1);
-
-    int ret = 1;
-    for (int i : v)
-    {
-        if (i > 1) // 1개 이하는 경우의 수에 영향을 안줌
-            ret *= fibo[i];
+        vip[vipTemp - 1] = 1;
     }
 
-    cout << ret;
+    cout << Go(0);
 }
