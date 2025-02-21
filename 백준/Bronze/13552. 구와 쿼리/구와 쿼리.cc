@@ -4,13 +4,7 @@ using namespace std;
 using ll = long long;
 
 ll x, y, z, r;
-
-struct Point
-{
-    ll x, y, z;
-    Point() : x(0), y(0), z(0) {}
-    Point(ll x, ll y, ll z) : x(x), y(y), z(z) {}
-};
+ll ax[100001], ay[100001], az[100001], ar[100001];
 
 int main(void)
 {
@@ -20,13 +14,9 @@ int main(void)
 
     int n;
     cin >> n;
-    vector<Point> v(n);
 
     for (int i = 0; i < n; i++)
-    {
-        cin >> x >> y >> z;
-        v[i] = Point(x, y, z);
-    }
+        cin >> ax[i] >> ay[i] >> az[i];
 
     int m;
     cin >> m;
@@ -34,10 +24,15 @@ int main(void)
     {
         cin >> x >> y >> z >> r;
 
+        ll rr = r * r;
         int cnt = 0;
-        for (const Point& p : v)
+        for (int k = 0; k < n; ++k)
         {
-            if ((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y) + (p.z - z) * (p.z - z) <= r * r)
+            ll dx = (ax[k] - x);
+            ll dy = (ay[k] - y);
+            ll dz = (az[k] - z);
+
+            if (dx * dx + dy * dy + dz * dz <= rr)
                 ++cnt;
         }
 
