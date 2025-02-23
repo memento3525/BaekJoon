@@ -29,8 +29,8 @@ int main(void)
                 }
                 else
                 {
-                    cout << abs(firstY - y) + abs(firstX - x) << endl;
-                    break;
+                    cout << abs(firstY - y) + abs(firstX - x);
+                    exit(0);
                 }
             }
         }
