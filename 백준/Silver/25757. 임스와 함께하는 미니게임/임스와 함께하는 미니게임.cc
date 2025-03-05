@@ -18,13 +18,13 @@ int main(void)
     else if (game == 'F') person = 2;
     else person = 3;
 
+    s.reserve(n);
     string name;
     while (n--)
     {
         cin >> name;
-        s.insert(name);
+        s.emplace(name);
     }
 
-    int ret = (s.size() / person);
-    cout << ret;
+    cout << (s.size() / person);
 }
